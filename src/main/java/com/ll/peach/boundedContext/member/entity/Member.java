@@ -1,7 +1,7 @@
 package com.ll.peach.boundedContext.member.entity;
 
 import com.ll.peach.boundedContext.address.Address;
-import com.ll.peach.boundedContext.order.entity.Order;
+import com.ll.peach.boundedContext.order.entity.orders;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,6 +24,8 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String username;
+
     private String password;
 
     private String phone;
@@ -36,7 +38,7 @@ public class Member {
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Order> orderList = new ArrayList<>();
+    private List<orders> orderList = new ArrayList<>();
 
     @Embedded
     private Address address;

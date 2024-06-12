@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class Order {
+public class orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

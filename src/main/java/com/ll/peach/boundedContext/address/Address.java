@@ -23,14 +23,12 @@ public class Address {
     private String roadAddress;
 
     @Column(length = 5)
-    private String zipcode;
+    private String zonecode;
 
-
-
-    public Address(String sido, String roadAddress, String zipcode) {
+    public Address(String sido, String roadAddress, String zonecode) {
         this.sido = sido;
         this.roadAddress = roadAddress;
-        this.zipcode = zipcode;
+        this.zonecode = zonecode;
     }
 
     @Override
@@ -43,7 +41,7 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return Objects.equals(getSido(), address.getSido()) && Objects.equals(getRoadAddress(), address.getRoadAddress()) && Objects.equals(getZipcode(), address.getZipcode());
+        return Objects.equals(getSido(), address.getSido()) && Objects.equals(getRoadAddress(), address.getRoadAddress()) && Objects.equals(getZonecode(), address.getZonecode());
     }
 
 }
