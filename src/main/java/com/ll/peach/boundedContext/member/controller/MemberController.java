@@ -2,6 +2,7 @@ package com.ll.peach.boundedContext.member.controller;
 
 import com.ll.peach.base.rsData.RsData;
 import com.ll.peach.boundedContext.member.entity.Member;
+import com.ll.peach.boundedContext.member.form.LoginForm;
 import com.ll.peach.boundedContext.member.form.MemberForm;
 import com.ll.peach.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
@@ -9,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 @RestController
@@ -25,7 +29,7 @@ public class MemberController {
     public RsData<Member> join(@Valid @RequestBody MemberForm memberForm) {
 
         log.info("회원가입 시도");
-        RsData<Member> Rs = memberService.join(memberForm.getUsername(),memberForm.getPassword(),memberForm.getPhone(),memberForm.getSido(),memberForm.getRoadAddress(),memberForm.getZonecode());
+        RsData<Member> Rs = memberService.join(memberForm.getUsername(), memberForm.getPassword(), memberForm.getPhone(), memberForm.getSido(), memberForm.getRoadAddress(), memberForm.getZonecode());
 
         if (Rs.isFail()) {
             return RsData.of("F-1", "회원이 이미 존재합니다.");
