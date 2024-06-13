@@ -13,10 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.DelegatingSecurityContextRepository;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -24,18 +20,45 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomLoginAuthenticationEntryPoint authenticationEntryPoint;
+
+    private final AuthenticationConfiguration authenticationConfiguration;
+
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.
                 csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/member/join","/","/v1/member/login").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/member/join", "/", "/v1/member/login").permitAll()
                         .anyRequest().authenticated())
+                .exceptionHandling(config -> config
+                        .authenticationEntryPoint(authenticationEntryPoint))
                 .logout(logout -> logout.logoutUrl("/member/logout"));
+
+        http.addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+
+    @Bean
+    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+        CustomAuthenticationFilter filter = new CustomAuthenticationFilter("/v1/member/login");
+        filter.setAuthenticationManager(authenticationManager());
+        filter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
+        filter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
+        return filter;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
 
     @Bean
     PasswordEncoder passwordEncoder() {
