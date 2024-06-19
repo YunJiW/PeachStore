@@ -1,9 +1,11 @@
 package com.ll.peach.boundedContext.member.entity;
 
+import com.ll.peach.base.entity.BaseEntity;
 import com.ll.peach.boundedContext.address.Address;
 import com.ll.peach.boundedContext.order.entity.orders;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,28 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
+@SuperBuilder(toBuilder = true)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
-public class Member {
+public class Member extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String username;
 
     private String password;
 
     private String phone;
-
-    @CreatedDate
-    private LocalDateTime createDate;
-
-    @LastModifiedDate
-    private LocalDateTime modifyDate;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @Builder.Default
