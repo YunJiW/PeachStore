@@ -6,8 +6,11 @@ import com.ll.peach.boundedContext.item.entity.Item;
 import com.ll.peach.boundedContext.item.entity.ItemType;
 import com.ll.peach.boundedContext.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +43,13 @@ public class ItemService {
 
     public Item findByItemName(String name) {
         return itemRepository.findByName(name).orElse(null);
+    }
 
+    /**
+     * find items
+     * 상품 전체 조회
+     */
+    public List<Item> findAll() {
+        return itemRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
     }
 }

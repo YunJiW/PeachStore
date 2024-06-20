@@ -11,6 +11,6 @@ public class ItemForm {
     private String name;
 
     private ItemType itemType;
-    private String Categoryname;
+    private String categoryname;
 
 }

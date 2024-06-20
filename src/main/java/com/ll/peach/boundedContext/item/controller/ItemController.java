@@ -26,7 +26,7 @@ public class ItemController {
     private final CategoryService categoryService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("isAnonymous()")
     public RsData<Item> create(@Valid @RequestBody ItemForm itemForm) {
         RsData<Category> category = categoryService.createCategory(itemForm.getCategoryname());
 

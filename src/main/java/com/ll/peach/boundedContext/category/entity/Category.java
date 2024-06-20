@@ -1,6 +1,7 @@
 package com.ll.peach.boundedContext.category.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ll.peach.base.entity.BaseEntity;
 import com.ll.peach.boundedContext.item.entity.Item;
 import jakarta.persistence.Column;
@@ -28,6 +29,7 @@ public class Category extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     List<Item> items = new ArrayList<>();
 
 }
