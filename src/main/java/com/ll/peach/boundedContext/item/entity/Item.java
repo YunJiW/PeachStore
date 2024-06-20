@@ -25,6 +25,10 @@ public class Item extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
+    private int price;
+
+    private int quantity;
+
     public void addCategory(Category category) {
 
         if (this.category != null) {

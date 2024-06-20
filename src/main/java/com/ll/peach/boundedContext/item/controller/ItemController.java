@@ -30,7 +30,7 @@ public class ItemController {
     public RsData<Item> create(@Valid @RequestBody ItemForm itemForm) {
         RsData<Category> category = categoryService.createCategory(itemForm.getCategoryname());
 
-        RsData<Item> Rsdata = itemService.createItem(itemForm.getName(), itemForm.getItemType(), category.getData());
+        RsData<Item> Rsdata = itemService.createItem(itemForm.getName(), itemForm.getItemType(),itemForm.getPrice() ,itemForm.getQuantity(),category.getData());
 
         return Rsdata;
     }

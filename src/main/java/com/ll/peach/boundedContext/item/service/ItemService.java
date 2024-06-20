@@ -20,7 +20,7 @@ public class ItemService {
 
 
     @Transactional
-    public RsData<Item> createItem(String name, ItemType itemType, Category category) {
+    public RsData<Item> createItem(String name, ItemType itemType,int price ,int quantity,Category category) {
         Item findItem = findByItemName(name);
 
         if (findItem != null) {
@@ -31,6 +31,8 @@ public class ItemService {
         Item item = Item.builder()
                 .name(name)
                 .itemType(itemType)
+                .price(price)
+                .quantity(quantity)
                 .build();
 
         item.addCategory(category);

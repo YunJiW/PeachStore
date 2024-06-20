@@ -13,4 +13,8 @@ public class ItemForm {
     private ItemType itemType;
     private String categoryname;
 
+    private int price;
+
+    private int quantity;
+
 }
