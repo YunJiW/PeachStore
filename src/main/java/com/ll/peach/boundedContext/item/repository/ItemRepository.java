@@ -10,5 +10,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Optional<Item> findByName(String name);
 
-    List<Item> findAllByName(String name);
+    List<Item> findAllByNameContaining(String name);
 }

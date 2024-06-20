@@ -48,7 +48,7 @@ public class ItemService {
     }
 
     public List<Item> findAllByItemName(String name) {
-        return itemRepository.findAllByName(name);
+        return itemRepository.findAllByNameContaining(name);
     }
 
     /**
