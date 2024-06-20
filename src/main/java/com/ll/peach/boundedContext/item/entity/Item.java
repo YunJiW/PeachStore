@@ -4,13 +4,11 @@ package com.ll.peach.boundedContext.item.entity;
 import com.ll.peach.base.entity.BaseEntity;
 import com.ll.peach.boundedContext.category.entity.Category;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -27,5 +25,13 @@ public class Item extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
+    public void addCategory(Category category) {
+
+        if (this.category != null) {
+            this.category.getItems().remove(this);
+        }
+        this.category = category;
+        category.getItems().add(this);
+    }
 
 }
