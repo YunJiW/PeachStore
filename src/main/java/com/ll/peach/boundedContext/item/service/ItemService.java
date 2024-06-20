@@ -20,7 +20,7 @@ public class ItemService {
 
 
     @Transactional
-    public RsData<Item> createItem(String name, ItemType itemType,int price ,int quantity,Category category) {
+    public RsData<Item> createItem(String name, ItemType itemType, int price, int quantity, Category category) {
         Item findItem = findByItemName(name);
 
         if (findItem != null) {
@@ -47,11 +47,15 @@ public class ItemService {
         return itemRepository.findByName(name).orElse(null);
     }
 
+    public List<Item> findAllByItemName(String name) {
+        return itemRepository.findAllByName(name);
+    }
+
     /**
      * find items
      * 상품 전체 조회
      */
     public List<Item> findAll() {
-        return itemRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        return itemRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 }
