@@ -20,10 +20,6 @@ import java.util.stream.Collectors;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-
-    private final CategoryService categoryService;
-
-
     @Transactional
     public RsData<Item> createItem(String name, ItemType itemType, int price, int quantity, Category category) {
         Item findItem = findByItemName(name);
