@@ -53,9 +53,18 @@ public class ItemService {
         item.updateItem(name, itemType, price, quantity, category);
         itemRepository.save(item);
 
-        ItemDto itemDto = new ItemDto(item.getId(),item.getName(),item.getPrice(),item.getQuantity(),item.getCategory().getName());
+        ItemDto itemDto = new ItemDto(item.getId(), item.getName(), item.getPrice(), item.getQuantity(), item.getCategory().getName());
 
         return RsData.of("S-1", "상품 수정완료", itemDto);
+    }
+
+    @Transactional
+    public RsData<ItemDto> deleteItem(Item item) {
+        item.deleteCategory(item.getCategory());
+        itemRepository.delete(item);
+
+        ItemDto itemDto = new ItemDto(item.getId(), item.getName(), item.getPrice(), item.getQuantity(), item.getCategory().getName());
+        return RsData.of("S-1", "상품 삭제 완료", itemDto);
     }
 
 

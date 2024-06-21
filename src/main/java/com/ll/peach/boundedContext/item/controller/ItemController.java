@@ -78,4 +78,21 @@ public class ItemController {
 
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("isAnonymous()")
+    public RsData<ItemDto> removeItem(@PathVariable("id") Long id) {
+        Optional<Item> FindItem = itemService.findByItemId(id);
+
+        if (!FindItem.isPresent()) {
+            return RsData.of("F-1", "존재하지 않은 상품입니다.");
+        }
+
+        Item item = FindItem.get();
+
+
+        RsData<ItemDto> itemDtoRsData = itemService.deleteItem(item);
+
+        return itemDtoRsData;
+    }
+
 }
