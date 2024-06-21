@@ -38,4 +38,11 @@ public class Item extends BaseEntity {
         category.getItems().add(this);
     }
 
+    public void updateItem(String name, ItemType itemType, int price, int quantity, Category category) {
+        this.name = name;
+        this.itemType = itemType;
+        this.price = price;
+        this.quantity = quantity;
+        this.category = category;
+    }
 }

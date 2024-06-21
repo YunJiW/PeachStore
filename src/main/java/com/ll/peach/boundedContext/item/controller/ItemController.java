@@ -15,7 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/items")
@@ -29,7 +29,7 @@ public class ItemController {
     @PostMapping
     @PreAuthorize("isAnonymous()")
     public RsData<Item> create(@Valid @RequestBody ItemForm itemForm) {
-        
+
         log.info("상품 추가");
         RsData<Category> category = categoryService.createCategory(itemForm.getCategoryname());
 
@@ -42,19 +42,40 @@ public class ItemController {
     @PreAuthorize("isAnonymous()")
     public List<ItemDto> itemList() {
         log.info("상품 전체 조회");
-        return itemService.findAll().stream()
-                .map(item -> new ItemDto(item.getId(),item.getName(),item.getPrice(),item.getQuantity(),item.getCategory().getName()))
-                .collect(Collectors.toList());
+
+        return itemService.findAll();
     }
 
     @GetMapping("/search")
     @PreAuthorize("isAnonymous()")
-    public List<ItemDto> seachItem(@RequestParam("name")String name){
+    public List<ItemDto> seachItem(@RequestParam("name") String name) {
         log.info("특정 상품 이름 조회:" + name);
 
-        return itemService.findAllByItemName(name).stream()
-                .map(item -> new ItemDto(item.getId(),item.getName(),item.getPrice(),item.getQuantity(),item.getCategory().getName()))
-                .collect(Collectors.toList());
+        return itemService.findAllByItemName(name);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("isAnonymous()")
+    public ItemDto ItemById(@PathVariable("id") Long id) {
+        Optional<Item> findItem = itemService.findByItemId(id);
+
+        return findItem.map(item -> new ItemDto(item.getId(), item.getName(), item.getPrice(), item.getQuantity(), item.getCategory().getName())).orElse(null);
+    }
+
+    @PostMapping("/{id}")
+    @PreAuthorize("isAnonymous()")
+    public RsData<ItemDto> updateItem(@PathVariable("id") Long id, @Valid @RequestBody ItemForm itemForm) {
+        Optional<Item> findItem = itemService.findByItemId(id);
+
+        RsData<Category> category = categoryService.createCategory(itemForm.getCategoryname());
+
+        if (!findItem.isPresent()) {
+            return RsData.of("F-33", "상품이 존재하지 않습니다.");
+        }
+        Item item = findItem.get();
+        RsData<ItemDto> itemRsData = itemService.updateItem(item, itemForm.getName(), itemForm.getItemType(), itemForm.getPrice(), itemForm.getQuantity(), category.getData());
+        return itemRsData;
+
     }
 
 }
